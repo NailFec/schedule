@@ -4,7 +4,7 @@ import yaml
 import os
 import curses
 
-FILENAME = "tasks.yaml"
+FILENAME = "capture-data.yaml"
 
 
 def ensure_data_file_exists(filename):
