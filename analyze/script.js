@@ -71,9 +71,9 @@ function loadSampleData() {
         },
         {
             duration: 1500.0,
-            end: '2025-07-02T11:25:00.000',
+            end: '2025-07-02T06:25:00.000',
             name: '5-1',
-            start: '2025-07-02T11:00:00.000',
+            start: '2025-07-02T06:00:00.000',
             tag: 'Practice',
             type: 'Programming'
         }
@@ -91,7 +91,11 @@ function processData() {
     yamlData.forEach(item => {
         item.startDate = new Date(item.start);
         item.endDate = new Date(item.end);
-        item.dayKey = item.startDate.toISOString().split('T')[0];
+
+        const year = item.startDate.getFullYear();
+        const month = String(item.startDate.getMonth() + 1).padStart(2, '0');
+        const day = String(item.startDate.getDate()).padStart(2, '0');
+        item.dayKey = `${year}-${month}-${day}`;
     });
 
     // Sort data by start time
@@ -122,7 +126,8 @@ function generateTimeline() {
         dayDiv.className = 'timeline-day';
 
         const dayHeader = document.createElement('h3');
-        dayHeader.textContent = new Date(day).toLocaleDateString('en-US', {
+        dayHeader.textContent = new Date(day + 'T00:00:00Z').toLocaleDateString('en-US', {
+            timeZone: 'UTC',
             weekday: 'long',
             year: 'numeric',
             month: 'long',
@@ -132,8 +137,7 @@ function generateTimeline() {
 
         // Find day bounds
         const dayStart = new Date(day + 'T00:00:00');
-        const dayEnd = new Date(day + 'T23:59:59');
-        const dayDuration = dayEnd - dayStart;
+        const dayDurationMs = 24 * 60 * 60 * 1000;
 
         // Create timeline bar
         const timelineBar = document.createElement('div');
@@ -142,10 +146,10 @@ function generateTimeline() {
         dayData.forEach(item => {
             const itemDiv = document.createElement('div');
             itemDiv.className = 'timeline-item';
-            
-            const startOffset = (item.startDate - dayStart) / dayDuration * 100;
-            const itemWidth = (item.duration * 1000) / dayDuration * 100;
-            
+
+            const startOffset = (item.startDate - dayStart) / dayDurationMs * 100;
+            const itemWidth = (item.duration * 1000) / dayDurationMs * 100;
+            if (startOffset < 0) return;
             itemDiv.style.left = startOffset + '%';
             itemDiv.style.width = itemWidth + '%';
             itemDiv.style.backgroundColor = typeColors[item.type] || typeColors['Default'];
@@ -160,19 +164,19 @@ function generateTimeline() {
         // Create legend
         const legend = document.createElement('div');
         legend.className = 'timeline-legend';
-        
+
         const usedTypes = [...new Set(dayData.map(item => item.type))];
         usedTypes.forEach(type => {
             const legendItem = document.createElement('div');
             legendItem.className = 'legend-item';
-            
+
             const colorBox = document.createElement('div');
             colorBox.className = 'legend-color';
             colorBox.style.backgroundColor = typeColors[type] || typeColors['Default'];
-            
+
             const label = document.createElement('span');
             label.textContent = type;
-            
+
             legendItem.appendChild(colorBox);
             legendItem.appendChild(label);
             legend.appendChild(legendItem);
@@ -190,7 +194,7 @@ function generateCharts() {
 
 function generatePieChart() {
     const ctx = document.getElementById('pieChart').getContext('2d');
-    
+
     // Calculate total duration by type
     const typeDurations = {};
     yamlData.forEach(item => {
@@ -243,7 +247,7 @@ function generatePieChart() {
 
 function generateLineChart() {
     const ctx = document.getElementById('lineChart').getContext('2d');
-    
+
     // Calculate daily totals
     const dailyTotals = {};
     yamlData.forEach(item => {
@@ -263,7 +267,9 @@ function generateLineChart() {
     lineChart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: dates.map(date => new Date(date).toLocaleDateString()),
+            labels: dates.map(date => new Date(date + 'T00:00:00Z').toLocaleDateString('en-US', {
+                timeZone: 'UTC'
+            })),
             datasets: [{
                 label: 'Daily Total (hours)',
                 data: totals,
@@ -369,7 +375,7 @@ function generateDataDivs() {
 
                 const itemTime = document.createElement('div');
                 itemTime.className = 'data-item-time';
-                itemTime.textContent = `🕒 ${item.startDate.toLocaleTimeString()} - ${item.endDate.toLocaleTimeString()}`;
+                itemTime.textContent = `🕒 ${item.startDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - ${item.endDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
 
                 itemDetails.appendChild(itemDate);
                 itemDetails.appendChild(itemTime);
@@ -388,17 +394,17 @@ function generateDataDivs() {
 }
 
 function formatDuration(seconds) {
+    if (isNaN(seconds) || seconds < 0) return '0s';
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
     const remainingSeconds = Math.floor(seconds % 60);
 
-    if (hours > 0) {
-        return `${hours}h ${minutes}m ${remainingSeconds}s`;
-    } else if (minutes > 0) {
-        return `${minutes}m ${remainingSeconds}s`;
-    } else {
-        return `${remainingSeconds}s`;
-    }
+    let parts = [];
+    if (hours > 0) parts.push(`${hours}h`);
+    if (minutes > 0) parts.push(`${minutes}m`);
+    if (remainingSeconds > 0 || parts.length === 0) parts.push(`${remainingSeconds}s`);
+
+    return parts.join(' ');
 }
 
 // Initialize with sample data on page load
