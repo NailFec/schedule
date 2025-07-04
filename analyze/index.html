@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YAML Data Analyzer</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>YAML Data Analyzer</h1>
+        
+        <!-- File Upload Section -->
+        <div class="upload-section">
+            <input type="file" id="fileInput" accept=".yaml,.yml" />
+            <button onclick="loadSampleData()">Load Sample Data</button>
+        </div>
+
+        <!-- Part 1: Timeline -->
+        <section class="timeline-section">
+            <h2>Timeline View</h2>
+            <div id="timelineContainer"></div>
+        </section>
+
+        <!-- Part 2: Charts -->
+        <section class="charts-section">
+            <h2>Charts</h2>
+            <div class="charts-container">
+                <div class="pie-chart-container">
+                    <canvas id="pieChart"></canvas>
+                </div>
+                <div class="line-chart-container">
+                    <canvas id="lineChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Part 3: Data Divs -->
+        <section class="data-section">
+            <h2>Detailed Data</h2>
+            <div id="dataContainer"></div>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
