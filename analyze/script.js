@@ -7,14 +7,6 @@ const typeColors = {
     'Chemistry': '#FFEAA7',
     'Biology': '#DDA0DD',
     'Programming': '#74B9FF',
-    // Additional colors for other types
-    'History': '#FD79A8',
-    'Art': '#FDCB6E',
-    'Music': '#6C5CE7',
-    'PE': '#00B894',
-    'Geography': '#E84393',
-    'Literature': '#A29BFE',
-    'Science': '#00CEC9',
     'Default': '#95A5A6'
 };
 

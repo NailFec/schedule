@@ -5,25 +5,28 @@
     box-sizing: border-box;
 }
 
+:root {
+    --bg-color-blue: #4f94fc;
+}
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #dddddd27;
     min-height: 100vh;
     color: #333;
 }
 
 .container {
-    max-width: 1200px;
+    /* max-width: 1200px; */
     margin: 0 auto;
     padding: 20px;
 }
 
 h1 {
     text-align: center;
-    color: white;
     margin-bottom: 30px;
     font-size: 2.5em;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
 }
 
 h2 {
@@ -37,7 +40,7 @@ h2 {
     background: white;
     padding: 25px;
     border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.068);
     margin-bottom: 30px;
     text-align: center;
 }
@@ -45,13 +48,13 @@ h2 {
 #fileInput {
     margin: 10px;
     padding: 10px;
-    border: 2px dashed #667eea;
+    border: 2px dashed var(--bg-color-blue);
     border-radius: 8px;
     font-size: 16px;
 }
 
 button {
-    background: linear-gradient(45deg, #667eea, #764ba2);
+    background: var(--bg-color-blue);
     color: white;
     border: none;
     padding: 12px 25px;
@@ -72,7 +75,7 @@ button:hover {
     background: white;
     padding: 25px;
     border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.068);
     margin-bottom: 30px;
 }
 
@@ -81,7 +84,6 @@ button:hover {
     padding: 20px;
     background: #f8f9fa;
     border-radius: 10px;
-    border-left: 5px solid #667eea;
 }
 
 .timeline-day h3 {
@@ -92,7 +94,7 @@ button:hover {
 
 .timeline-bar {
     position: relative;
-    height: 60px;
+    height: 30px;
     background: #e9ecef;
     border-radius: 8px;
     overflow: hidden;
@@ -147,7 +149,7 @@ button:hover {
     background: white;
     padding: 25px;
     border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.068);
     margin-bottom: 30px;
 }
 
@@ -175,8 +177,14 @@ button:hover {
     background: white;
     padding: 25px;
     border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.068);
     margin-bottom: 30px;
+}
+
+#dataContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
 }
 
 .type-group {
@@ -187,7 +195,7 @@ button:hover {
 }
 
 .type-header {
-    background: linear-gradient(45deg, #667eea, #764ba2);
+    background: var(--bg-color-blue);
     color: white;
     padding: 15px 20px;
     font-size: 1.4em;
@@ -267,6 +275,11 @@ button:hover {
     .pie-chart-container {
         flex: none;
         min-height: 300px;
+    }
+    
+    #dataContainer {
+        grid-template-columns: 1fr;
+        gap: 20px;
     }
     
     .data-item-header {
