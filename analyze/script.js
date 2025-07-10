@@ -1,12 +1,12 @@
 // Color scheme for different types
 const typeColors = {
-    'Chinese': '#FF6B6B',
-    'Maths': '#4ECDC4',
-    'English': '#45B7D1',
-    'Physics': '#96CEB4',
-    'Chemistry': '#FFEAA7',
-    'Biology': '#DDA0DD',
-    'Programming': '#74B9FF',
+    'Chinese': '#fcbf49',
+    'Maths': '#48cae4',
+    'English': '#f1c0e8',
+    'Physics': '#858ae3',
+    'Chemistry': '#edf67d',
+    'Biology': '#b5e48c',
+    'Programming': '#b5e2fa',
     'Default': '#95A5A6'
 };
 
@@ -153,8 +153,8 @@ function generateTimeline() {
             itemDiv.style.left = startOffset + '%';
             itemDiv.style.width = itemWidth + '%';
             itemDiv.style.backgroundColor = typeColors[item.type] || typeColors['Default'];
-            itemDiv.textContent = item.name;
-            itemDiv.title = `${item.name} (${item.type}) - ${formatDuration(item.duration)}`;
+            itemDiv.textContent = item.tag;
+            itemDiv.title = `${item.type} ${item.tag} ${item.name} - ${formatDuration(item.duration)}`;
             
             timelineBar.appendChild(itemDiv);
         });

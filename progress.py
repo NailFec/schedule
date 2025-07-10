@@ -140,12 +140,12 @@ def display_tasks(stdscr, tasks):
             stdscr, task['current_progress'], task['total_digit'], w)
         stdscr.addstr(progress_line, 0, progress_str)
 
-    stdscr.addstr(h - 4, 0, "--------------------")
+    stdscr.addstr(h - 3, 0, "--------------------")
     stdscr.addstr(
-        h - 3, 0, "Commands: [i]nsert, [a]dd progress, [d]elete, [q]quit")
-    stdscr.addstr(h - 2, 0, "Enter command: ")
+        h - 2, 0, "Commands: [i]nsert, [a]dd progress, [d]elete, [q]quit")
+    stdscr.addstr(h - 1, 0, "Enter command: ")
 
-    stdscr.move(h - 2, len("Enter command: "))
+    stdscr.move(h - 1, len("Enter command: "))
     stdscr.refresh()
 
 
