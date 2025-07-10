@@ -14,6 +14,21 @@ let yamlData = [];
 let pieChart = null;
 let lineChart = null;
 
+// automatically import yaml file
+fetch('../capture-data.yaml')
+    .then(response => response.text())
+    .then(yamlContent => {
+        try {
+            yamlData = jsyaml.load(yamlContent);
+            processData();
+        } catch (error) {
+            console.error('Error parsing YAML file:', error);
+        }
+    })
+    .catch(error => {
+        console.error('Error loading YAML file:', error);
+    });
+
 // File input handler
 document.getElementById('fileInput').addEventListener('change', handleFileSelect);
 
@@ -21,7 +36,7 @@ function handleFileSelect(event) {
     const file = event.target.files[0];
     if (file) {
         const reader = new FileReader();
-        reader.onload = function(e) {
+        reader.onload = function (e) {
             try {
                 const yamlContent = e.target.result;
                 yamlData = jsyaml.load(yamlContent);
@@ -155,7 +170,7 @@ function generateTimeline() {
             itemDiv.style.backgroundColor = typeColors[item.type] || typeColors['Default'];
             itemDiv.textContent = item.tag;
             itemDiv.title = `${item.type} ${item.tag} ${item.name} - ${formatDuration(item.duration)}`;
-            
+
             timelineBar.appendChild(itemDiv);
         });
 
@@ -231,7 +246,7 @@ function generatePieChart() {
                 },
                 tooltip: {
                     callbacks: {
-                        label: function(context) {
+                        label: function (context) {
                             const label = context.label || '';
                             const value = context.parsed;
                             const total = context.dataset.data.reduce((a, b) => a + b, 0);
@@ -375,7 +390,10 @@ function generateDataDivs() {
 
                 const itemTime = document.createElement('div');
                 itemTime.className = 'data-item-time';
-                itemTime.textContent = `🕒 ${item.startDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - ${item.endDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+                itemTime.textContent = `🕒 ${item.startDate.toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                })} - ${item.endDate.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}`;
 
                 itemDetails.appendChild(itemDate);
                 itemDetails.appendChild(itemTime);
@@ -408,7 +426,7 @@ function formatDuration(seconds) {
 }
 
 // Initialize with sample data on page load
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // You can uncomment the next line to load sample data automatically
     // loadSampleData();
 });
